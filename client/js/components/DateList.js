@@ -1,10 +1,9 @@
 import DateEntry from './DateEntry.js';
-import { formatDate } from '../utils.js';
 
 const DateList = {
   computed: {
     today() {
-      return formatDate(new Date());
+      return (new Date()).toLocaleDateString();
     }
   },
   props: ['calendar'],

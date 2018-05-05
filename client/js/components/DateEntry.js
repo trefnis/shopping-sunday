@@ -1,5 +1,3 @@
-import { formatDate } from '../utils.js';
-
 const DateEntry = {
   props: ['date', 'isShopping', 'holiday', 'shoppingUntil2PM'],
   computed: {
@@ -7,7 +5,7 @@ const DateEntry = {
       return `/img/${this.isShopping ? 'cart' : 'family'}.svg`;
     },
     formattedDate() {
-      return formatDate(new Date(this.date));
+      return (new Date(this.date)).toLocaleDateString();
     },
     type() {
       if (this.holiday) {
