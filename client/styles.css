@@ -1,0 +1,110 @@
+:root {
+  --theme-color: #5C6BC0;
+  --accent-color: #FF7961;
+  --warn-color: #F44336;
+}
+
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+
+.menu {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  color: white;
+  background-color: var(--theme-color);
+}
+
+.menu__list {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__list-item {
+  flex: 1 0 0;
+  opacity: 0.7;
+  padding: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.menu__list-item.active {
+  opacity: 1;
+  border-bottom: 4px solid var(--accent-color);
+}
+
+
+.date-list {
+}
+
+.date-list__header {
+  opacity: 0.7;
+  margin: 20px 20px;
+}
+
+.date-list__items {
+  padding: 0 16px;
+}
+
+.date-list__item {
+  list-style: none;
+}
+
+
+.date-entry {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+}
+
+.date-entry::after {
+  content: '';
+  position: absolute;
+  right: -16px;
+  bottom: 0;
+  left: 58px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.date-entry__icon {
+  width: 30px;
+  height: 30px;
+}
+
+.date-entry__date {
+  min-width: 98px;
+  margin: 0 26px;
+  font-size: 18px;
+}
+
+.date-entry__day {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.date-entry__type {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.date-entry__type--no-shopping {
+  color: var(--theme-color);
+}
+
+.date-entry__type--holiday {
+  color: var(--warn-color);
+}
+
+.date-entry__additional-info {
+  color: var(--theme-color);
+}
+

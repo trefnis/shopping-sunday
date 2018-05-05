@@ -1,0 +1,20 @@
+{
+  "name": "y",
+  "version": "0.0.0",
+  "description": "App helping to find out which Sundays are shopping Sundays in Poland.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server client/ -p 8080 -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trefnis/shopping-sunday.git"
+  },
+  "author": "trefnis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/trefnis/shopping-sunday/issues"
+  },
+  "homepage": "https://github.com/trefnis/shopping-sunday#readme"
+}
