@@ -1,9 +1,10 @@
 const sundaysCalendar = [
+  { date: '2018-05-06', isShopping: true, },
   { date: '2018-05-13', isShopping: false, },
   { date: '2018-05-20', isShopping: false, },
-  { date: '2018-05-17', isShopping: true },
+  { date: '2018-05-27', isShopping: true },
   { date: '2018-05-31', isShopping: false, holiday: 'Boże Ciało' },
-  { date: '2018-06-3', isShopping: true },
+  { date: '2018-06-03', isShopping: true },
   { date: '2018-06-10', isShopping: false },
   { date: '2018-06-17', isShopping: false },
   { date: '2018-06-24', isShopping: true },
