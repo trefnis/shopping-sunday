@@ -108,3 +108,7 @@ body {
   color: var(--theme-color);
 }
 
+
+.reminders-placeholder {
+  margin: 20px;
+}

@@ -1,5 +1,9 @@
 const Reminders = {
-  template: `<div>reminders</div>`,
+  template: `
+    <div class="reminders-placeholder">
+      W trakcie pracy, będą dostępne w późniejszym czasie.
+    </div>
+  `,
 };
 
 export default Reminders;
