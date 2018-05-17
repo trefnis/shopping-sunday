@@ -9,3 +9,7 @@ const app = new window.Vue({
   components: { App },
   template: `<App :calendar="calendar" />`,
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('generated-service-worker.js');
+}
