@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# generated service worker
+generated-service-worker.js
+
