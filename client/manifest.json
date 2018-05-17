@@ -1,0 +1,15 @@
+{
+  "name": "Niedziele handlowe",
+  "short_name": "Niedziele handlowe",
+  "icons": [
+    {
+      "src": "./img/cart.png",
+      "sizes": "48x48 72x72 96x96 128x128 256x256 512x512"
+    }
+  ],
+  "lang": "pl-PL",
+  "start_url": "/",
+  "theme_color": "#5C6BC0",
+  "background_color": "#FFFFFF",
+  "display": "standalone"
+}
