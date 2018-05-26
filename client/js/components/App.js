@@ -16,7 +16,7 @@ const App = {
   props: ['calendar'],
   components: { Menu, DateList, Reminders },
   template: `
-    <div>
+    <div class="app-container">
       <Menu
         :activeItem="currentView"
         @selected-item="changeCurrentView"
