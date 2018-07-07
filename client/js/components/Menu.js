@@ -1,8 +1,8 @@
 const Menu = {
   methods: {
     select(item) {
-      this.$emit('selected-item', item);
-    }
+      this.$emit('update:activeItem', item);
+    },
   },
   props: ['activeItem'],
   template: `

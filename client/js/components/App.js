@@ -6,26 +6,29 @@ const App = {
   data() {
     return {
       currentView: 'date-list',
+      areNotificationsSupported: false,
     };
-  },
-  methods: {
-    changeCurrentView(newView) {
-      this.currentView = newView;
-    }
   },
   props: ['calendar'],
   components: { Menu, DateList, Reminders },
-  template: `
+  beforeMount() {
+    const requiredApis = ['ServiceWorker', 'PushManager', 'Notification'];
+    if (requiredApis.every(api => api in window)) {
+      this.areNotificationsSupported = true;
+    }
+  },
+  template: /*html*/`
     <div class="app-container">
       <Menu
-        :activeItem="currentView"
-        @selected-item="changeCurrentView"
+        v-if="areNotificationsSupported"
+        :activeItem.sync="currentView"
       />
       <DateList
         v-show="currentView === 'date-list'"
         :calendar="calendar"
       />
       <Reminders
+        v-if="areNotificationsSupported"
         v-show="currentView === 'reminders'"
       />
     </div>

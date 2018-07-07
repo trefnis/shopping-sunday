@@ -10,15 +10,15 @@ body {
 }
 
 .app-container {
-  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 600px;
+  max-height: 100vh;
 }
 
 
 .menu {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1;
   color: white;
   background-color: var(--theme-color);
 }
@@ -47,6 +47,7 @@ body {
 
 
 .date-list {
+  overflow: auto;
 }
 
 .date-list__header {
