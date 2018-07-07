@@ -13,7 +13,7 @@ const sundaysCalendar = [
   { date: '2018-07-15', isShopping: false },
   { date: '2018-07-22', isShopping: false },
   { date: '2018-07-29', isShopping: true },
-  { date: '2018-07-05', isShopping: true },
+  { date: '2018-08-05', isShopping: true },
   { date: '2018-08-12', isShopping: false },
   { date: '2018-08-15', isShopping: false, holiday: 'Święto Wojska Polskiego' },
   { date: '2018-08-19', isShopping: false },
