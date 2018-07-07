@@ -5,7 +5,7 @@ const Menu = {
     },
   },
   props: ['activeItem'],
-  template: `
+  template: /*html*/`
     <nav class="menu">
       <ul class="menu__list">
         <li

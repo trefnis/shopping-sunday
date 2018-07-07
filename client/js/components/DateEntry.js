@@ -15,7 +15,7 @@ const DateEntry = {
       return this.isShopping ? 'niedziela handlowa' : 'wolna niedziela';
     },
   },
-  template: `
+  template: /*html*/`
     <div class="date-entry">
       <img
         class="date-entry__icon"

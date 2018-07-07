@@ -1,6 +1,5 @@
 import Menu from './Menu.js';
 import DateList from './DateList.js';
-import Reminders from './Reminders.js';
 
 const App = {
   data() {
@@ -10,7 +9,11 @@ const App = {
     };
   },
   props: ['calendar'],
-  components: { Menu, DateList, Reminders },
+  components: { 
+    Menu,
+    DateList,
+    Reminders: () => import('./Reminders.js'),
+  },
   beforeMount() {
     const requiredApis = ['ServiceWorker', 'PushManager', 'Notification'];
     if (requiredApis.every(api => api in window)) {
@@ -28,8 +31,7 @@ const App = {
         :calendar="calendar"
       />
       <Reminders
-        v-if="areNotificationsSupported"
-        v-show="currentView === 'reminders'"
+        v-if="areNotificationsSupported && currentView === 'reminders'"
       />
     </div>
   `,

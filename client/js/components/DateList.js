@@ -16,7 +16,7 @@ const DateList = {
   },
   props: ['calendar'],
   components: { DateEntry },
-  template: `
+  template: /*html*/`
     <div class="date-list">
       <p class="date-list__header">Dzisiaj jest {{ today }}</p>
       <ul class="date-list__items">
