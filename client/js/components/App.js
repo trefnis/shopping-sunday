@@ -1,5 +1,6 @@
 import Menu from './Menu.js';
 import DateList from './DateList.js';
+import Loader from './Loader.js';
 
 const App = {
   data() {
@@ -12,7 +13,11 @@ const App = {
   components: { 
     Menu,
     DateList,
-    Reminders: () => import('./Reminders.js'),
+    Reminders: () => ({
+      component: import('./Reminders.js'),
+      loading: Loader,
+      delay: 0,
+    }),
   },
   beforeMount() {
     const requiredApis = ['ServiceWorker', 'PushManager', 'Notification'];

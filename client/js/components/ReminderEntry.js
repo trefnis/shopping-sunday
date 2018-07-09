@@ -14,31 +14,56 @@ const ReminderEntry = {
       this[item.action](item);
     },
     edit(item) {
-      console.log('edit');
+      this.$emit('edit');
     },
     delete(item) {
-      console.log('delete');
+      this.$emit('delete');
     },
   },
+  computed: {
+    allDayTypes() {
+      return this.reminder.remindShoppingSunday && 
+        this.reminder.remindNotShoppingSunday &&
+        this.reminder.remindHoliday;
+    }
+  },
   components: { Dropdown },
-  props: ['long'],
+  props: ['reminder'],
   template: /*html*/`
     <div class="reminder-entry">
       <img
         class="reminder-entry__icon"
         src="/img/clock.svg"
       />
-      <div class="reminder-entry__datetime">
-        <span class="reminder-entry__time">13:30</span>
-        <span class="reminder-entry__date">1 dzień przed</span>
-      </div>
+
+      <span class="reminder-entry__time">{{ reminder.time }}</span>
+
       <div
         class="reminder-entry__day-types"
-        :class="{ 'reminder-entry__day-types--long': long }"
+        :class="{ 'reminder-entry__day-types--long': allDayTypes }"
       >
-        <span>wolną niedzielą</span>
-        <span>niedzielą handlową</span>
-        <span v-if="long">świętem</span>
+        <span class="reminder-entry__date">
+          {{ reminder.daysBefore }}
+          {{ reminder.daysBefore === '1' ? 'dzień' : 'dni' }} przed
+        </span>
+        <span
+          class="reminder-entry__shopping-sunday"
+          v-if="reminder.remindNotShoppingSunday"
+        >
+          wolną niedzielą
+        </span>
+        <span 
+          class="reminder-entry__not-shopping-sunday"
+          v-if="reminder.remindShoppingSunday"
+        >
+          niedzielą handlową
+        </span>
+        <span
+          class="reminder-entry__holiday"
+          v-if="reminder.remindHoliday"
+        >
+          świętem
+        </span>
       </div>
       <div class="reminder-entry__options">
         <Dropdown

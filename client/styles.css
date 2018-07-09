@@ -155,7 +155,14 @@ body {
   text-align: center;
 }
 
+.reminders__nothing-added {
+  margin: 20px;
+}
+
 .reminders__add-button {
+  align-items: center;
+  display: flex;
+  justify-content: center;
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -192,19 +199,15 @@ body {
   height: 30px;
 }
 
-.reminder-entry__datetime {
-  min-width: 80px;
-  margin: 0 26px;
-}
-
 .reminder-entry__time {
+  min-width: 48px;
+  margin: 0 26px;
   font-size: 18px;
 }
 
 .reminder-entry__date {
-  display: block;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.7);
+  /* color: rgba(0, 0, 0, 0.7); */
 }
 
 .reminder-entry__day-types {
@@ -216,6 +219,18 @@ body {
 
 .reminder-entry__day-types--long {
   font-size: 12px;
+}
+
+.reminder-entry__shopping-sunday {
+  color: var(--theme-color);
+}
+
+.reminder-entry__not-shopping-sunday {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.reminder-entry__holiday {
+  color: var(--accent-color);
 }
 
 .reminder-entry__options {
@@ -230,7 +245,7 @@ body {
 }
 
 .reminder-entry__option {
-  padding: 8px 16px;
+  padding: 16px;
   font-size: 14px;
   text-transform: uppercase;
   color: rgba(0,0,0,0.7);
@@ -285,6 +300,11 @@ body {
   width: 100%;
   height: 40px;
   margin-top: 50px;
+}
+
+.reminder-editor__form input[type=submit][disabled] {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .reminder-editor__form-item {
@@ -384,7 +404,7 @@ input[type=submit] {
 .loader:before,
 .loader:after {
   content: '';
-  position: fixed;
+  position: absolute;
   top: 0;
 }
 

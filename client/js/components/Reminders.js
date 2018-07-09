@@ -31,8 +31,10 @@ const Reminders = {
       if (isNew) {
         this.reminders.push(reminder);
       } else {
-        this.reminders.$set(index, reminder);
+        this.$set(this.reminders, index, reminder);
       }
+
+      this.editedReminder = null;
 
       // TODO:
       // try {
@@ -43,8 +45,23 @@ const Reminders = {
       //   this.reminders = previousReminders;
       // }
     },
+    editReminder(reminder, index) {
+      const editedReminder = Object.assign({}, reminder, { index });
+      this.editedReminder = editedReminder;
+    },
+    deleteReminder(reminder, index) {
+      this.reminders.splice(index, 1);
+
+      // TODO:
+      // try {
+      //   const deviceId = get from local storage
+      //   await this.deleteReminderRequest(reminder, deviceId);
+      // } catch (error) {
+      //   // handle error message
+      //   this.reminders.splice(index, 0, reminder);
+      // }
+    },
     openEditor(reminder) {
-      console.log(reminder)
       this.editedReminder = reminder;
     },
     closeEditor() {
@@ -60,7 +77,7 @@ const Reminders = {
         <Loader />
       </div>
       <div v-if="this.status === 'ready'">
-        <div class="list">
+        <!-- <div class="list">
           <ul class="list__items">
             <li
               class="list__item"
@@ -78,12 +95,27 @@ const Reminders = {
               <ReminderEntry />
             </li>
           </ul>
+        </div> -->
+        <p
+          class="reminders__nothing-added"
+          v-if="reminders.length === 0"
+        >
+          Nie dodałeś jeszcze żadnych przypomnień.
+        </p>
+        <div class="list">
+          <ul class="list__items">
+            <li
+              class="list__item"
+              v-for="(reminder, index) in reminders"
+            >
+              <ReminderEntry
+                :reminder="reminder"
+                @edit="editReminder(reminder, index)"
+                @delete="deleteReminder(reminder, index)"
+              />
+            </li>
+          </ul>
         </div>
-        <ul>
-          <li v-for="reminder in reminders">
-            {{ reminder }}
-          </li>
-        </ul>
         <button
           class="reminders__add-button"
           v-if="!editedReminder"

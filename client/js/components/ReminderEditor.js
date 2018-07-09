@@ -1,27 +1,37 @@
 const ReminderEditor = {
   data() {
-    return {
-      daysBefore: 1,
+    const editedReminder = this.reminder.isNew ? {
+      isNew: true,
+      daysBefore: "1",
       time: null,
       remindNotShoppingSunday: true,
       remindShoppingSunday: false,
       remindHoliday: false,
-    };
+    } : Object.assign({}, this.reminder);
+
+    return { editedReminder };
   },
   props: ['reminder'],
+  computed: {
+    canSubmit() {
+      const { 
+        time,
+        remindShoppingSunday,
+        remindNotShoppingSunday,
+        remindHoliday,
+      } = this.editedReminder;
+
+      return time && (remindShoppingSunday 
+        || remindNotShoppingSunday 
+        || remindHoliday);
+    },
+  },
   methods: {
     close() {
       this.$emit('close');
     },
     save() {
-      const { daysBefore, time, remindShoppingSunday, remindNotShoppingSunday} = this;
-      const reminder = Object.assign({}, this.reminder, {
-        daysBefore,
-        time,
-        remindShoppingSunday,
-        remindNotShoppingSunday,
-      });
-      this.$emit('save', reminder);
+      this.$emit('save', this.editedReminder);
     },
   },
   template: /*html*/`
@@ -36,50 +46,65 @@ const ReminderEditor = {
           </button>
           {{ reminder.isNew ? 'Dodaj' : 'Zapisz' }} przypomnienie
         </div>
+
         <div class="reminder-editor__form">
           <div class="reminder-editor__form-item">
-            <label form="daysBefore">Ile dni przed?</label>
-            <select v-model="daysBefore" name="daysBefore">
+            <label for="daysBefore">Ile dni przed?</label>
+            <select v-model="editedReminder.daysBefore" id="daysBefore">
               <option>1</option>
               <option>2</option>
               <option>3</option>
             </select>
           </div>
+
           <div class="reminder-editor__form-item">
             <label for="time">O której godzinie?</label>
-            <input name="time" type="time" v-bind="time">
-          </div>
-          <div class="reminder-editor__form-item">
             <input
-              name="remindShoppingSunday"
-              type="checkbox"
-              v-bind="remindShoppingSunday"
+              id="time"
+              type="time"
+              v-model="editedReminder.time"
+              required
             >
-            <label for="remindShoppingSunday">
-              Przypomnienie przed niedzielą handlową
-            </label>
           </div>
+
           <div class="reminder-editor__form-item">
             <input
-              name="remindNotShoppingSunday"
+              id="remindNotShoppingSunday"
               type="checkbox"
-              v-bind="remindNotShoppingSunday"
+              v-model="editedReminder.remindNotShoppingSunday"
             >
             <label for="remindNotShoppingSunday">
               Przypomnienie przed wolną niedzielą
             </label>
           </div>
+
           <div class="reminder-editor__form-item">
             <input
-              name="remindHoliday"
+              id="remindShoppingSunday"
               type="checkbox"
-              v-bind="remindHoliday"
+              v-model="editedReminder.remindShoppingSunday"
+            >
+            <label for="remindShoppingSunday">
+              Przypomnienie przed niedzielą handlową
+            </label>
+          </div>
+
+          <div class="reminder-editor__form-item">
+            <input
+              id="remindHoliday"
+              type="checkbox"
+              v-model="editedReminder.remindHoliday"
             >
             <label for="remindHoliday">
               Przypomnienie przed świętem
             </label>
           </div>
-          <input type="submit" value="Zapisz" />
+
+          <input
+            type="submit"
+            value="Zapisz"
+            :disabled="!canSubmit"
+          />
         </div>
       </div>
   </form>
