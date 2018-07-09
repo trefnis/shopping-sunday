@@ -27,8 +27,8 @@ const DateEntry = {
       <div
         class="date-entry__type"
         :class="{
-          'date-entry__type--no-shopping': !isShopping ,
-          'date-entry__type--holiday': holiday ,
+          'date-entry__type--no-shopping': !isShopping,
+          'date-entry__type--holiday': holiday,
         }"
       >
         {{ type }}

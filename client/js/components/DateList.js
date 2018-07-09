@@ -18,16 +18,17 @@ const DateList = {
   components: { DateEntry },
   template: /*html*/`
     <div class="date-list">
-      <p class="date-list__header">Dzisiaj jest {{ today }}</p>
-      <ul class="date-list__items">
-        <li
-          v-for="dateEntry in validDateEntries"
-          class="date-list__item"
-          :class="{ marked: !dateEntry.isShopping }"
-        >
-          <DateEntry v-bind="dateEntry" />
-        </li>
-      </ul>
+      <div class="list">
+        <p class="list__header">Dzisiaj jest {{ today }}</p>
+        <ul class="list__items">
+          <li
+            v-for="dateEntry in validDateEntries"
+            class="list__item"
+          >
+            <DateEntry v-bind="dateEntry" />
+          </li>
+        </ul>
+      </div>
     </div>
   `,
 };
