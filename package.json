@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-client": "serve -s client/ -p 3000 -c=0",
-    "start-api": "nodemon ./api/server.js",
+    "start-api": "nodemon ./server/api/server.js",
     "generate-sw": "workbox injectManifest ./workbox-config.js"
   },
   "repository": {
