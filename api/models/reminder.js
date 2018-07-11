@@ -29,8 +29,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
     },
   }, {});
-  Reminder.associate = function(models) {
-    Reminder.belongsTo(models.Device, { onDelete: 'cascade' });
+
+  Reminder.prototype.toJSON = function() {
+    const reminder = Object.assign({}, this.get());
+    delete reminder.deviceId;
+    delete reminder.createdAt;
+    delete reminder.updatedAt;
+    return reminder;
   };
+
   return Reminder;
 };

@@ -13,5 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.JSON,
     },
   }, {});
+
+  Device.associate = models => {
+    Device.hasMany(models.Reminder, { 
+      foreignKey: 'deviceId',
+      onDelete: 'cascade',
+      hooks: true,
+    });
+  }
+  
   return Device;
 };
