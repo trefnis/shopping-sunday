@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   }, {});
 
+  Reminder.associate = models => {
+    Reminder.belongsTo(models.Device, {
+      as: 'device',
+      foreignKey: 'deviceId',
+    })
+  };
+
   Reminder.prototype.toJSON = function() {
     const reminder = Object.assign({}, this.get());
     delete reminder.deviceId;

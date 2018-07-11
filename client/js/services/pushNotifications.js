@@ -1,9 +1,9 @@
-const applicationServerPublicKey = 'BB4H2AbYhtXOQx03enRL4vYh3ADEiIYsDMAtcckCjejq-pAp3sACJ9bh5tDJdl-RqAfd7QUXVYryeWkr8ejKlnw';
+const applicationServerPublicKey = 'BGhEj4luPHNn2h8GbBwDZlXGH4Op2bP2LR-pMrn4fbMYDMNfxFWdTXnKcw3Wdmc1fJ1aLekCJl5Rd1lQqzBLStM';
 
 export async function initialize() {
   const serviceWorkerRegistration = await navigator.serviceWorker.ready;
 
-  const pushSubscription = await serviceWorkerRegistration.pushManager.getSubscription();
+  let pushSubscription = await serviceWorkerRegistration.pushManager.getSubscription();
   const notificationPermissionStatus = await Notification.requestPermission();
   const isAlreadySubscribed = pushSubscription !== null;
 
@@ -17,10 +17,17 @@ export async function initialize() {
 
   if (!isAlreadySubscribed) {
     try {
-      await subscribe();
+      pushSubscription = await subscribe();
     } catch (error) {
       return 'error';
     }
+  }
+
+  // Do it always to ensure that in case subscription changes, server is up to date.
+  try {
+    await updateSubscriptionOnServer(pushSubscription);
+  } catch (error) {
+    return 'error';
   }
 
   return 'ready';
@@ -30,12 +37,11 @@ export async function subscribe() {
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
 
   try {
-  const serviceWorkerRegistration = await navigator.serviceWorker.ready;
-  const subscription = await serviceWorkerRegistration.pushManager.subscribe({
+    const serviceWorkerRegistration = await navigator.serviceWorker.ready;
+    return await serviceWorkerRegistration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: applicationServerKey
+      applicationServerKey,
     });
-    await updateSubscriptionOnServer(subscription);
   } catch (error) {
     console.error('Failed to subscribe the user: ', error);
     throw error;
@@ -50,14 +56,20 @@ export async function unsubscribe() {
   }
 }
 
-function updateSubscriptionOnServer(subscription) {
-  if (subscription === null) {
-    // TODO: cleanup
-  }
+async function updateSubscriptionOnServer(subscription) {
+  const response = await fetch(`${apiUrl}/subscribe`, {
+    method: 'POST',
+    body: JSON.stringify(subscription),
+    mode: "cors",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
 
-  // TODO: Send subscription to application server
-  window.s = subscription;
-  console.log(subscription);
+  if (!response.ok) {
+    throw new Error(`Failed to subscribe.`);
+  }
 }
 
 function urlB64ToUint8Array(base64String) {

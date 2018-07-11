@@ -149,10 +149,19 @@ body {
   align-items: center;
 }
 
+.reminders__loader {
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+}
+
 .reminders__info-disabled {
   z-index: 1;
   margin-top: -20px;
   text-align: center;
+}
+
+.reminders__error {
+  margin: 20px;
 }
 
 .reminders__nothing-added {
@@ -298,7 +307,7 @@ body {
 
 .reminder-editor__form input[type=submit] {
   width: 100%;
-  height: 40px;
+  height: 50px;
   margin-top: 50px;
 }
 
@@ -323,6 +332,8 @@ select {
   display: block;
   width: 100px;
   height: 34px;
+  font-size: 16px;
+  line-height: 16px;
   padding: 6px 10px;
   color: rgba(0, 0, 0, 0.6);
   background-color: #fff;

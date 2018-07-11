@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'cascade',
       hooks: true,
     });
-  }
+  };
   
   return Device;
 };

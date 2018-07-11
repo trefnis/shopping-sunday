@@ -2,64 +2,81 @@ import Loader from './Loader.js';
 import ReminderEditor from './ReminderEditor.js';
 import ReminderEntry from './ReminderEntry.js';
 import { initialize as initializePushNotifications } from '../services/pushNotifications.js';
+import { fetchReminders, addReminder, saveReminder, deleteReminder } from '../services/reminders.js';
 
 const Reminders = {
   data() {
     return {
-      // status: 'loading',
-      status: 'ready',
+      status: 'bootstrapping',
       editedReminder: null,
       reminders: [],
     };
   },
   components: { Loader, ReminderEditor, ReminderEntry },
-  async created() {
-    // TODO: fetch reminders
+  async beforeMount() {
+    try {
+      const status = await initializePushNotifications();
+      if (status === 'ready') {
+        this.reminders = await fetchReminders();
+      }
+      this.status = status;
+    } catch (error) {
+      console.error(error);
+      this.status = 'error';
+    }
   },
-  // async beforeMount() {
-  //   const status = await initializePushNotifications();
-  //   this.status = status;
-  // },
+  computed: {
+    showLoader() {
+      return this.status === 'bootstrapping' || this.status === 'loading';
+    },
+    showList() {
+      return this.status === 'ready' ||
+        this.status === 'updateFailed' ||
+        this.status === 'loading';
+    },
+  },
   methods: {
-    async saveReminder(reminder) {
-      const previousReminders = Array.from(this.reminders);
+    async save(reminder) {
+      this.status = 'loading';
+
       const { index, isNew } = reminder;
 
       delete reminder.index;
       delete reminder.isNew;
-
-      if (isNew) {
-        this.reminders.push(reminder);
-      } else {
-        this.$set(this.reminders, index, reminder);
+      
+      try {
+        if (isNew) {
+          const newReminder = await addReminder(reminder);
+          this.reminders.push(newReminder);
+        } else {
+          const newReminder = await saveReminder(reminder);
+          this.$set(this.reminders, index, newReminder);
+        }
+        this.editedReminder = null;
+      } catch (error) {
+        console.error(error);
+        this.failUpdate();
+        this.reminders = previousReminders;
+      } finally {
+        this.status = 'ready';
       }
-
-      this.editedReminder = null;
-
-      // TODO:
-      // try {
-      //   const deviceId = get from local storage
-      //   await this.saveReminderRequest(reminder, deviceId);
-      // } catch (error) {
-      //   // handle error message
-      //   this.reminders = previousReminders;
-      // }
     },
-    editReminder(reminder, index) {
+    edit(reminder, index) {
       const editedReminder = Object.assign({}, reminder, { index });
       this.editedReminder = editedReminder;
     },
-    deleteReminder(reminder, index) {
-      this.reminders.splice(index, 1);
+    async remove(reminder, index) {
+      this.status = 'loading';
 
-      // TODO:
-      // try {
-      //   const deviceId = get from local storage
-      //   await this.deleteReminderRequest(reminder, deviceId);
-      // } catch (error) {
-      //   // handle error message
-      //   this.reminders.splice(index, 0, reminder);
-      // }
+      try {
+        await deleteReminder(reminder);
+        this.reminders.splice(index, 1);
+      } catch (error) {
+        console.error(error);
+        this.failUpdate();
+      } finally {
+        this.status = 'ready';
+      }
     },
     openEditor(reminder) {
       this.editedReminder = reminder;
@@ -67,35 +84,24 @@ const Reminders = {
     closeEditor() {
       this.editedReminder = null;
     },
+    failUpdate() {
+      this.status = 'updateFailed';
+      setTimeout(() => {
+        if (this.status === 'updateFailed') {
+          this.status = 'ready';
+        }
+      }, 4000);
+    },
   },
   template: /*html*/`
     <div class="reminders">
       <div
         class="reminders__loader"
-        v-if="this.status === 'loading'"
+        v-if="showLoader"
       >
         <Loader />
       </div>
-      <div v-if="this.status === 'ready'">
-        <!-- <div class="list">
-          <ul class="list__items">
-            <li
-              class="list__item"
-            >
-              <ReminderEntry />
-            </li>
-            <li
-              class="list__item"
-            >
-              <ReminderEntry long="true" />
-            </li>
-            <li
-              class="list__item"
-            >
-              <ReminderEntry />
-            </li>
-          </ul>
-        </div> -->
+      <div v-if="showList">
         <p
           class="reminders__nothing-added"
           v-if="reminders.length === 0"
@@ -110,8 +116,8 @@ const Reminders = {
             >
               <ReminderEntry
                 :reminder="reminder"
-                @edit="editReminder(reminder, index)"
-                @delete="deleteReminder(reminder, index)"
+                @edit="edit(reminder, index)"
+                @delete="remove(reminder, index)"
               />
             </li>
           </ul>
@@ -126,17 +132,22 @@ const Reminders = {
         <ReminderEditor
           v-if="editedReminder"
           :reminder="editedReminder"
-          @save="saveReminder"
+          @save="save"
           @close="closeEditor"
         />
       </div>
       <div
         class="reminders__info-disabled"
-        v-if="this.status === 'disabled'"
+        v-if="status === 'disabled'"
         >
         Aby korzystać z przypomnień, musisz zezwolić aplikacji na wysyłanie powiadomień.
       </div>
-      <div v-if="this.status === 'error'">Wystąpił błąd. Następnym razem na pewno zadziała.</div>
+      <p
+        class="reminders__error"
+        v-if="status === 'error' || status === 'updateFailed'"
+      >
+        Wystąpił błąd. Następnym razem na pewno zadziała.
+      </p>
     </div>
   `,
 };

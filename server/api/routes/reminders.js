@@ -15,7 +15,7 @@ router.use(authenticate);
 
 const validations = [
   body('daysBefore').isIn(['1','2','3']).toInt(),
-  body('time').matches(/^(?:\d|[01]\d|2[0-3]):[0-5]\d$/),
+  body('time').matches(/^(?:\d|[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/),
   body('remindNotShoppingSunday').isBoolean(),
   body('remindShoppingSunday').isBoolean(),
   body('remindHoliday').isBoolean(),

@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const { getDeviceId } = require('./middlewares/device');
 const subscribe = require('./routes/subscribe');
@@ -11,6 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(logger('dev'));
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 
