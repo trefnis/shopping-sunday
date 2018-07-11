@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   Device.associate = models => {
-    Device.hasMany(models.Reminder, { 
+    Device.hasMany(models.Reminder, {
+      as: 'reminders',
       foreignKey: 'deviceId',
       onDelete: 'cascade',
       hooks: true,

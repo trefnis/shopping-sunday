@@ -24,7 +24,7 @@ const validations = [
 router.get('/',
   wrap(async (req, res) => {
     const device = await db.Device.findById(res.locals.deviceId, {
-      include: [{ model: db.Reminder },]
+      include: [{ model: db.Reminder, as: 'reminders' },]
     });
     if (!device) {
       res.status('404').end();
