@@ -26,11 +26,14 @@
     "workbox-cli": "^3.2.0"
   },
   "dependencies": {
+    "bull": "^3.4.3",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-validator": "^5.2.0",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.21",
     "morgan": "^1.9.0",
     "pg": "^7.4.3",
     "pg-hstore": "^2.3.2",
