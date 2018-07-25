@@ -23,6 +23,20 @@ const App = {
     const requiredApis = ['ServiceWorker', 'PushManager', 'Notification'];
     if (requiredApis.every(api => api in window)) {
       this.areNotificationsSupported = true;
+
+      navigator.serviceWorker.addEventListener('message', this.handleIncomingReminders);
+    }
+  },
+  beforeDestroy() {
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.removeEventListener('message', this.handleIncomingReminders);
+    }
+  },
+  methods: {
+    handleIncomingReminders(event) {
+      console.log('incoming reminder wooohoo');
+      console.log(event.data);
+      console.log(this);
     }
   },
   template: /*html*/`

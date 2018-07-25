@@ -97,7 +97,10 @@ async function sendReminders(remindersByDay, text) {
     Promise.all(reminders.map(reminder =>
       webPush.sendNotification(
         reminder.device.subscription,
-        getReminderText(day, daysAheadToday),
+        JSON.stringify({
+          text: getReminderText(day, daysAheadToday),
+          day
+        }),
         { TTL: 12 * 60 * 60 }
       )
     ))
@@ -139,5 +142,7 @@ async function performTask() {
     }, 100);
   }
 }
+
+performTask();
 
 module.exports = performTask;

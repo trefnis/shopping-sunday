@@ -3,7 +3,13 @@
   "short_name": "Niedziele handlowe",
   "icons": [
     {
+      "src": "./img/cart-s.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
       "src": "./img/cart.png",
+      "type": "image/png",
       "sizes": "48x48 72x72 96x96 128x128 256x256 512x512"
     }
   ],
