@@ -1,12 +1,14 @@
-const { cookie } = require('express-validator/check');
+const { header } = require('express-validator/check');
 
 const getDeviceId = (req, res, next) => {
-  const { deviceId } = req.cookies;
-  res.locals.deviceId = deviceId;
+  const deviceId = req.header('deviceId');
+  if (deviceId) {
+    res.locals.deviceId = deviceId;
+  }
   next();
 };
 
-const requireDeviceId = cookie('deviceId').isUUID(4);
+const requireDeviceId = header('deviceId').isUUID(4);
 
 module.exports = {
   getDeviceId,

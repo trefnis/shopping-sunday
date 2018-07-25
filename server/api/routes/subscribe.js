@@ -14,12 +14,14 @@ router.post('/',
   body('endpoint').isURL({ protocols: ['https'] }),
   validate,
   wrap(async (req, res, next) => {
-    if (res.locals.deviceId) {
-      const device = await db.Device.findById(res.locals.deviceId); 
+    const { deviceId } = res.locals;
+
+    if (deviceId) {
+      const device = await db.Device.findById(deviceId); 
       if (device) {
         device.subscription = req.body;
         await device.save();
-        return res.send();
+        return res.json({ deviceId });
       }
     } 
 
@@ -27,7 +29,7 @@ router.post('/',
       subscription: req.body,
     });
 
-    res.cookie('deviceId', newDevice.id, { httpOnly: true }).send();
+    return res.json({ deviceId: newDevice.id });
   }));
 
 module.exports = router;

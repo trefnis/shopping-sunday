@@ -1,8 +1,22 @@
+import { get } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
+
+async function getOptions(customOptions = { headers: {} }) {
+  const deviceId = await get('deviceId');
+  
+  return Object.assign(customOptions, {
+    mode: 'cors',
+    headers: Object.assign({ deviceId }, customOptions.headers),
+  });
+}
+
+async function apiFetch(url, options) {
+  const mergedOptions = await getOptions(options);
+  return fetch(url, mergedOptions);
+}
+
 export async function fetchReminders() {
-  const response = await fetch(`${apiUrl}/reminders`, {
+  const response = await apiFetch(`${apiUrl}/reminders`, {
     method: 'GET',
-    mode: "cors",
-    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -13,14 +27,12 @@ export async function fetchReminders() {
 }
 
 export async function addReminder(reminder) {
-  const response = await fetch(`${apiUrl}/reminders`, {
+  const response = await apiFetch(`${apiUrl}/reminders`, {
     method: 'POST',
     body: JSON.stringify(reminder),
-    mode: "cors",
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -31,14 +43,12 @@ export async function addReminder(reminder) {
 }
 
 export async function saveReminder(reminder) {
-  const response = await fetch(`${apiUrl}/reminders/${encodeURIComponent(reminder.id)}`, {
+  const response = await apiFetch(`${apiUrl}/reminders/${encodeURIComponent(reminder.id)}`, {
     method: 'PUT',
     body: JSON.stringify(reminder),
-    mode: "cors",
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -49,10 +59,11 @@ export async function saveReminder(reminder) {
 }
 
 export async function deleteReminder(reminder) {
-  const response = await fetch(`${apiUrl}/reminders/${encodeURIComponent(reminder.id)}`, {
+  const response = await apiFetch(`${apiUrl}/reminders/${encodeURIComponent(reminder.id)}`, {
     method: 'DELETE',
-    mode: "cors",
-    credentials: 'include',
+    headers: {
+      deviceId: await get('deviceId'),
+    },
   });
 
   if (!response.ok) {

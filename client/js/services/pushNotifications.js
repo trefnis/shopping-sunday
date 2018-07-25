@@ -1,4 +1,6 @@
-const applicationServerPublicKey = 'BGhEj4luPHNn2h8GbBwDZlXGH4Op2bP2LR-pMrn4fbMYDMNfxFWdTXnKcw3Wdmc1fJ1aLekCJl5Rd1lQqzBLStM';
+const applicationServerPublicKey = 'BKqS2CQ60YDGYKwPj7ph1zpDIy2stNTGwvSjcXaEyq94F08adWAyt0n25bP5DRSTiUrul6rj0UbujZ-ZiILcjA0';
+
+import { get, set, del } from 'https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval.mjs';
 
 export async function initialize() {
   const serviceWorkerRegistration = await navigator.serviceWorker.ready;
@@ -25,7 +27,8 @@ export async function initialize() {
 
   // Do it always to ensure that in case subscription changes, server is up to date.
   try {
-    await updateSubscriptionOnServer(pushSubscription);
+    const { deviceId } = await updateSubscriptionOnServer(pushSubscription);
+    await set('deviceId', deviceId);
   } catch (error) {
     return 'error';
   }
@@ -49,6 +52,8 @@ export async function subscribe() {
 }
 
 export async function unsubscribe() {
+  await del('deviceId');
+
   const serviceWorkerRegistration = await navigator.serviceWorker.ready;
   const subscription = await serviceWorkerRegistration.getSubscription();
   if (subscription) {
@@ -57,19 +62,28 @@ export async function unsubscribe() {
 }
 
 async function updateSubscriptionOnServer(subscription) {
+  const deviceId = await get('deviceId');
+  
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (deviceId) {
+    headers.deviceId = deviceId;
+  }
+
   const response = await fetch(`${apiUrl}/subscribe`, {
     method: 'POST',
     body: JSON.stringify(subscription),
     mode: "cors",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
+    headers,
   });
 
   if (!response.ok) {
     throw new Error(`Failed to subscribe.`);
   }
+
+  return await response.json();
 }
 
 function urlB64ToUint8Array(base64String) {
