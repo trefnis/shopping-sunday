@@ -16,9 +16,6 @@ workbox.routing.registerRoute(
 );
 
 self.addEventListener('push', event => {
-  console.log('[Service Worker] Push Received.');
-  console.log(`[Service Worker] Push had this data: "${event.data.json()}"`);
-
   const data = event.data.json();
 
   const { text, day } = data;
@@ -42,11 +39,17 @@ async function openApp(data) {
     includeUncontrolled: true,
   });
 
-  const client = await (openWindows.length ?
-    openWindows[0].focus() :
-    clients.openWindow('/'));
-
-  client.postMessage({ type: 'notification-received', data });
+  if (openWindows.length) {
+    // Assume that app is initialized and we can send messages to it.
+    const client = await openWindows[0].focus();
+    client.postMessage({ type: 'notification-received', reminder: data });
+  } else {
+    // App can't handle messages before it gets initialized, so pass
+    // the reminder in the url.
+    const serializedReminder = encodeURIComponent(JSON.stringify(data));
+    const url = `/?reminder=${serializedReminder}`;
+    return clients.openWindow(url);
+  }
 }
 
 self.addEventListener('notificationclick', event => {

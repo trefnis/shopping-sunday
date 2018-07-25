@@ -1,6 +1,7 @@
 const Menu = {
   methods: {
     select(item) {
+      window.history.pushState({ view: item }, '');
       this.$emit('update:activeItem', item);
     },
   },

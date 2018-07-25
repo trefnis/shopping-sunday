@@ -36,19 +36,19 @@ const ReminderEditor = {
   },
   template: /*html*/`
     <form
-      class="reminder-editor"
+      class="popup"
       @submit.prevent="save"
     >
-      <div class="reminder-editor__wrapper">
-        <div class="reminder-editor__header">
+      <div class="popup__wrapper">
+        <div class="popup__header">
           <button type="button" @click="close">
             <img src="/img/return.svg" alt="wróć" />
           </button>
           {{ reminder.isNew ? 'Dodaj' : 'Zapisz' }} przypomnienie
         </div>
 
-        <div class="reminder-editor__form">
-          <div class="reminder-editor__form-item">
+        <div class="reminder-editor">
+          <div class="reminder-editor__item">
             <label for="daysBefore">Ile dni przed?</label>
             <select v-model="editedReminder.daysBefore" id="daysBefore">
               <option>1</option>
@@ -57,7 +57,7 @@ const ReminderEditor = {
             </select>
           </div>
 
-          <div class="reminder-editor__form-item">
+          <div class="reminder-editor__item">
             <label for="time">O której godzinie?</label>
             <input
               id="time"
@@ -67,7 +67,7 @@ const ReminderEditor = {
             >
           </div>
 
-          <div class="reminder-editor__form-item">
+          <div class="reminder-editor__item">
             <input
               id="remindNotShoppingSunday"
               type="checkbox"
@@ -78,7 +78,7 @@ const ReminderEditor = {
             </label>
           </div>
 
-          <div class="reminder-editor__form-item">
+          <div class="reminder-editor__item">
             <input
               id="remindShoppingSunday"
               type="checkbox"
@@ -89,7 +89,7 @@ const ReminderEditor = {
             </label>
           </div>
 
-          <div class="reminder-editor__form-item">
+          <div class="reminder-editor__item">
             <input
               id="remindHoliday"
               type="checkbox"

@@ -77,7 +77,7 @@ function getReminderText(day, daysAheadToday) {
   const when = {
     1: 'Jutro',
     2: 'Pojutrze',
-    3: 'Za 2 dni',
+    3: 'Za 3 dni',
   }[daysAheadToday];
 
   if (day.holiday) {
@@ -114,7 +114,7 @@ async function performTask() {
     const timeWindow = getCurrentTimeWindow();
     console.log(`Selecting reminders within: ${timeWindow[0]} - ${timeWindow[1]}`);
 
-    const days = [1, 2, 3].map(daysAheadToday => 
+    const days = [1, 2, 3, 4].map(daysAheadToday => 
       [getSundayOrHolidayAhead(daysAheadToday), daysAheadToday]
     );
     const daysLog = days.reduce((logMessage, [day]) => (
