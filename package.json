@@ -8,11 +8,13 @@
   "main": "server/api/server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "generate-sw": "workbox injectManifest ./workbox-config.js",
+    "watch:client": "nodemon --ignore generated-service-worker.js --watch service-worker.js --watch client --exec 'npm run generate-sw'",
     "start:client": "serve -s client/",
     "start:api": "nodemon --watch server/api ./server/api/server.js",
-    "generate-sw": "workbox injectManifest ./workbox-config.js",
+    "start:dev": "npm run watch:client & npm run start:client & npm run start:api",
     "start": "npm run start:client & npm run start:api",
-    "watch": "nodemon --ignore generated-service-worker.js --watch service-worker.js --watch client --exec 'npm run generate-sw'"
+    "migrate": "sequelize db:migrate"
   },
   "repository": {
     "type": "git",

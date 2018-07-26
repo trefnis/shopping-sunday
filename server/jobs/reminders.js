@@ -143,6 +143,4 @@ async function performTask() {
   }
 }
 
-performTask();
-
 module.exports = performTask;
