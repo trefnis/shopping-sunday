@@ -34,6 +34,7 @@ const ReminderEntry = {
       <img
         class="reminder-entry__icon"
         src="/img/clock.svg"
+        alt="przypomnienie"
       />
 
       <span class="reminder-entry__time">{{ reminder.time }}</span>

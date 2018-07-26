@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Niedziele handlowe</title>
-  <script src="https://unpkg.com/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script src="js/main.js" type="module"></script>
-  <script defer nomodule>
-    // TODO: show info of not supported browser
-    </script>
+  </noscript>
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
   <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/png" href="/img/cart-192-transparent.png">
@@ -18,6 +16,16 @@
 </head>
 <body>
   <div id="app">
+    <noscript>
+      <div>Twoja przeglądarka nie jest wspierana. Upewnij się, że Twoja przeglądarka ma włączony JavaScript i wspiera najnowsze standardy.</div>
+    </noscript>
   </div>
+  <script defer nomodule>
+    var noScriptElement = document.querySelector('noscript');
+    var app = document.getElementById('app');
+    if (noScriptElement && app) {
+      app.innerHTML = noScriptElement.innerText;
+    }
+  </script>
 </body>
 </html>
