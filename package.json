@@ -1,13 +1,18 @@
 {
-  "name": "y",
-  "version": "0.0.0",
+  "name": "shopping-sunday",
+  "version": "0.0.1",
   "description": "App helping to find out which Sundays are shopping Sundays in Poland.",
-  "main": "index.html",
+  "engines": {
+    "node": "10.6.0"
+  },
+  "main": "server/api/server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-client": "serve -s client/ -p 3000 -c=0",
-    "start-api": "nodemon ./server/api/server.js",
-    "generate-sw": "workbox injectManifest ./workbox-config.js"
+    "start:client": "serve -s client/",
+    "start:api": "nodemon --watch server/api ./server/api/server.js",
+    "generate-sw": "workbox injectManifest ./workbox-config.js",
+    "start": "npm run start:client & npm run start:api",
+    "watch": "nodemon --ignore generated-service-worker.js --watch service-worker.js --watch client --exec 'npm run generate-sw'"
   },
   "repository": {
     "type": "git",
@@ -22,7 +27,7 @@
   "devDependencies": {
     "nodemon": "^1.17.5",
     "sequelize-cli": "^4.0.0",
-    "serve": "^6.5.7",
+    "serve": "^9.3.0",
     "workbox-cli": "^3.2.0"
   },
   "dependencies": {
