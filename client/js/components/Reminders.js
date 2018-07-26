@@ -18,12 +18,20 @@ const Reminders = {
       const status = await initializePushNotifications();
       if (status === 'ready') {
         this.reminders = await fetchReminders();
+        window.history.replaceState(
+          Object.assign(window.history.state, { reminderEditor: false }), ''
+        );
+
+        window.addEventListener('popstate', this.handleHistoryChange);
       }
       this.status = status;
     } catch (error) {
       console.error(error);
       this.status = 'error';
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('popstate', this.handleHistoryChange);
   },
   computed: {
     showLoader() {
@@ -52,7 +60,7 @@ const Reminders = {
           const newReminder = await saveReminder(reminder);
           this.$set(this.reminders, index, newReminder);
         }
-        this.editedReminder = null;
+        this.closeEditor();
       } catch (error) {
         console.error(error);
         this.failUpdate();
@@ -63,7 +71,7 @@ const Reminders = {
     },
     edit(reminder, index) {
       const editedReminder = Object.assign({}, reminder, { index });
-      this.editedReminder = editedReminder;
+      this.openEditor(editedReminder);
     },
     async remove(reminder, index) {
       this.status = 'loading';
@@ -80,9 +88,19 @@ const Reminders = {
     },
     openEditor(reminder) {
       this.editedReminder = reminder;
+      window.history.pushState(
+        Object.assign({}, window.history.state, { reminderEditor: true }), ''
+      );
     },
     closeEditor() {
-      this.editedReminder = null;
+      if (window.history.state.reminderEditor) {
+        window.history.back();
+      }
+    },
+    handleHistoryChange({ state }) {
+      if (state && state.view === 'reminders' && this.editedReminder) {
+        this.editedReminder = null;
+      }
     },
     failUpdate() {
       this.status = 'updateFailed';
