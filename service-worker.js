@@ -11,7 +11,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-  'https://unpkg.com/vue',
+  'https://cdn.jsdelivr.net/npm/.*',
   workbox.strategies.staleWhileRevalidate(),
 );
 
