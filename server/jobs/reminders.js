@@ -134,6 +134,7 @@ async function performTask() {
     return db.sequelize.close();
 
   } catch (error) {
+    await db.sequelize.close();
     console.error(error);
     console.error('=== Sending reminders task FAILED ===\n');
 
