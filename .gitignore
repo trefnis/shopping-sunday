@@ -60,3 +60,5 @@ typings/
 # generated service worker
 generated-service-worker.js
 
+# Old code
+client-old
